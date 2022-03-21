@@ -7,28 +7,61 @@ This third lab assignment will be graded and you will be working in pairs, so yo
 
 You will be working with the ActiveRecord Object-Relational Mapping (ORM) framework to implement the model layer of a web application. By the end of the assignment, you are required to submit a working Ruby on Rails application containing the model layer, that is, all models and associations.
 
-## Requirements
+## First Steps
 
-You will create the data model for a web application that implements a ticket sales system. Systems of such kind usually present the user an event catalog, and the user reviews event information and purchases tickets. The data model for the system must comprise the following features:
+The starter code contains a Rails project that has a few changes after its original creation. You may open the project with VSCode, with RubyMine, or even use a text-based editor like Vim. If you work on the terminal, always remember to set the correct version of ruby and gemset using RVM:
 
-* Persist customer information as name, last name, email, phone, password and address.
-* Persist event venue information as name, address and capacity.
-* Persist event information as name, description, start date, and in which an event takes place.
-* Persist ticket type information including the event, and the ticket price.
-* Persist ticket orders created by a customer, that is, a ticket order by a customer may comprise one or more types of tickets being purchased, and one or more tickets of each type.
+```sh
+rvm use 3@webtech # this will work on the course's VM
+````
 
-You are required to implement the following in your application:
+If you take a look at the `db` directory, you will find there are two files:
 
-* [2.5 points] Generate the necessary models, either by using the generator that is built into Rails, and/or by hand.
-* [2.5 points] Specify the required associations in the different model classes.
-* [1.0 point] Try out your models and their associations by running ActiveRecord method calls in the rails console (`rails c`):
-  * Create two customers,
-  * three different events, 
-  * two ticket types per event (e.g. general and golden),
-  * three different venues, and 
-  * four orders, each containing tickets for two or more events.
+* `schema.rb`: This file is automatically created by Rails when migrations are run. The file contains all DDL operations needed to initialize the database schema according to migrations.
+* `seeds.rb`: It contains Ruby code that performs initialization in the database. You will see that a series of beers are created in the database.
 
+Now, if you also take a look at `db/migrate`, you will see there is a single migration that creates an `events` table in the database. This table corresponds, of course, to the `Event` model. To see the current columns of the `events` table (and attributes of the `Event` model), one possibility is to take a look at `schema.rb` and have a look at the columns that are added to the `events` table on initialization. 
+
+## Where fun begins
+
+You will create the data model for a web application that implements a ticket sales system. Systems of such kind usually present the user an event catalog, and the user reviews event information and purchases tickets.
+
+* [1.0 point] Start by creating a `Customer` model with `name`, `last_name`, `email`, `phone`, `password` and `address` fields. Make the address `string` type.
+* [1.5 point] Create an `EventVenue` model with `name`, `address` and `capacity` (integer) attributes. Note than an `EventVenue` _has many_ events. And that an `Event` may _belong to_ an `EventVenue`. When adding a `belongs_to :event_venue` call to `Event`, pass the `optional: true` argument:
+
+```ruby
+belongs_to :event_venue, optional:true
+```
+
+This will allow an `Event` to be created without specifying an `EventVenue`.
+* [1.0 point] Make an `Event` be able to reference an `EventVenue`. For this, a foreign key to the `event_venues` table must be added to the `event` table:
+```sh
+rails g migration add_event_venue_id_to_events event_venue_id:integer
+```
+Look at the migration that is generated with the above command line and make sure it adds a foreign key column to the `events` table. Also, it must be possible to look up an `Event`'s venue from an `Event` object (choose the right type of association).
+
+* [1.5 point] Create a `TicketType` model that references an `Event` and has a price (integer). An `Event` _has many_ ticket types.
+* [1.0 point] With your models it must be possible to create in the console the following objects:
+  * Two customers,
+  * Three different venues,
+  * Two different events (each referencing a different event venue), 
+  * Two ticket types per event (e.g. general and golden),
+  
 It can be convenient to first sketch an E-R diagram (on paper or with a visual tool) that facilitates analyzing what the necessary models and associations are. You are not required to hand in your diagram though.
+
+## Grading
+
+Each of the three parts of the assignment will be graded on a scale from 1 to 5. The criteria for each score is as follows:
+
+* Not implemented.
+* Some very basic implementation is attempted, or the implementation is fundamentally flawed.
+* The implementation is either incomplete, does not follow conventions or it is flawed to a considerable extent.
+* The implementation is rather complete, but there are issues.
+* The implementation is complete and correct.
+
+Then each 1-5 score will translate to 0, 0.25, 0.5, 0.75 and 1.0 weights that will multiply the maximum score possible in the corresponding part of the assignment. The weighted scores will be added up with the base point to calculate the final grade on a scale from 1 to 7.
+
+Please commit and push your code to GitHub until tomorrow (Wednesday 23rd) at 23:59.
 
 ## Repository setup
 
@@ -45,25 +78,50 @@ $rails c
 
 The last command in the listing above will open the Rails console for you. You may close it with Ctrl+D.
 
-## Grading
+## About migrations
 
-Each of the three parts of the assignment will be graded on a scale from 1 to 5. The criteria for each score is as follows:
+* Migrations that you create by using the rails generator can be modified by hand. You may do so in case you misstype column names, or types. If you need to modify a migration by hand, delete the database (run `db:drop`) (see below about database tasks), and start over recreating the database.
 
-* Not implemented.
-* Some very basic implementation is attempted, or the implementation is fundamentally flawed.
-* The implementation is either incomplete, does not follow conventions or it is flawed to a considerable extent.
-* The implementation is rather complete, but there are issues.
-* The implementation is complete and correct.
+## Making sure it all works: The Rails Console
 
-Then each 1-5 score will translate to 0, 0.25, 0.5, 0.75 and 1.0 weights that will multiply the maximum score possible in the corresponding part of the assignment. The weighted scores will be added up with the base point to calculate the final grade on a scale from 1 to 7.
+Ruby on Rails provides a console on which you may run ruby code that instances the models contained in your application, and allows you to try out the associations that are implemented. Just to give you an idea about what is possible, consider the following example:
 
-Please commit and push your code to GitHub until tomorrow (Wednesday 23rd) at 23:59.
+```sh
+rails c
+> Event.all # Will show all Beer models available
+> Event.first # Will show the first event record found
+> ev = EventVenue.create(name: bb, capacity: 1000) # Create an event venue
+> e = Event.create(...) # This will create an event
+> c = Customer.create(...)
+```
 
-## Testing your application
+To quit the console, press Ctrl+D.
 
-To test your application, you can use the RoR console (`rails c`) to create instances of your models, associate them and store them in the database.
+## Basic database tasks
 
-To open the rails console and create models, try the following:
+Rails provides several database tasks that you may run on the command line whenever needed:
+
+* `db:migrate` runs (single) migrations that have not run yet.
+* `db:create` creates the database
+* `db:drop` deletes the database
+* `db:schema:load` creates tables and columns within the (existing) database following `schema.rb`
+* `db:setup` does `db:create`, `db:schema:load`,  `db:seed`
+* `db:reset` does `db:drop`, `db:setup`
+
+Typically, you would use db:migrate after having made changes to the schema via new migration files (this makes sense only if there is already data in the database). `db:schema:load` is used when you setup a new instance of your app.
+
+After you create a migration, do not forget to apply it to the database!
+
+```sh
+rails db:migrate
+```
+
+The following example will drop the current database and then recreate it, including initialization as specified in `db/seeds.rb`:
+
+```sh
+rails db:drop
+rails db:setup
+```
 
 ## Useful links
 
