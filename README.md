@@ -45,19 +45,19 @@ add_reference :events, :event_venue, null: false, foreign_key: true
 ```
 
 * [1.5 point] Create a `TicketType` model that references an `Event`, has a price (integer) and a `name`. An `Event` _has many_ ticket types.
-* [1.0 point] With your models it must be possible to create in the console the following objects:
+* [1.0 point] With your models it must be possible to create in the console the following models:
   * Two customers,
   * Three different venues,
   * Two different events (each referencing a different event venue), 
   * Two ticket types per event (e.g. general and golden).
 
-You may edit the file `db/seeds.rb` and add all the code necessary to create the above. To run your code, enter the following command:
+You may edit the file `db/seeds.rb` (this file is intended for database initialization, as we will see in the next class) and add all the code necessary to create the above models (i.e., the same code you enter in the rails console). To run your code, enter the following command:
 
 ```sh
 $rails db:seed
 ```
 
-To run the above command successfully, all migrations need to be run first!
+All migrations need to be run before executing the command above!
   
 It can be convenient to first sketch an E-R diagram (on paper or with a visual tool) that facilitates analyzing what the necessary models and associations are. You are not required to hand in your diagram though.
 
