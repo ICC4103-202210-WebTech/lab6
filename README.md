@@ -59,13 +59,13 @@ Then each 1-5 score will translate to 0, 0.25, 0.5, 0.75 and 1.0 weights that wi
 
 Please commit and push your code to GitHub until tomorrow (Wednesday 23rd) at 23:59.
 
-## Testing your application
+## Testing your application
 
-To test your application, you can use the RoR console (\texttt{rails c}) to create instances of your models, associate them and store them in the database.
+To test your application, you can use the RoR console (`rails c`) to create instances of your models, associate them and store them in the database.
 
 To open the rails console and create models, try the following:
 
-## Useful links
+## Useful links
 
 The following links to Rails Guides will provide you useful information for completing your assignment:
 
