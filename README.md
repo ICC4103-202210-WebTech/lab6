@@ -26,7 +26,7 @@ Now, if you also take a look at `db/migrate`, you will see there is a single mig
 
 You will create the data model for a web application that implements a ticket sales system. Systems of such kind usually present the user an event catalog, and the user reviews event information and purchases tickets.
 
-* [1.0 point] Start by creating a `Customer` model with `name`, `last_name`, `email`, `phone`, `password` and `address` fields. Make the address `string` type.
+* [1.0 point] Start by creating a `Customer` model with `first_name`, `last_name`, `email`, `phone`, `password` and `address` fields. Make the address `string` type.
 * [1.5 point] Create an `EventVenue` model with `name`, `address` and `capacity` (integer) attributes. Note than an `EventVenue` _has many_ events. And that an `Event` may _belong to_ an `EventVenue`. When adding a `belongs_to :event_venue` call to `Event`, pass the `optional: true` argument:
 
 ```ruby
@@ -36,16 +36,28 @@ belongs_to :event_venue, optional:true
 This will allow an `Event` to be created without specifying an `EventVenue`.
 * [1.0 point] Make an `Event` be able to reference an `EventVenue`. For this, a foreign key to the `event_venues` table must be added to the `event` table:
 ```sh
-rails g migration add_event_venue_id_to_events event_venue_id:integer
+rails g migration AddEventVenueRefToEvent event_venue:references
 ```
-Look at the migration that is generated with the above command line and make sure it adds a foreign key column to the `events` table. Also, it must be possible to look up an `Event`'s venue from an `Event` object (choose the right type of association).
+Look at the migration that is generated with the above command line and make sure it adds a foreign key column to the `events` table.
 
-* [1.5 point] Create a `TicketType` model that references an `Event` and has a price (integer). An `Event` _has many_ ticket types.
+```ruby
+add_reference :events, :event_venue, null: false, foreign_key: true
+```
+
+* [1.5 point] Create a `TicketType` model that references an `Event`, has a price (integer) and a `name`. An `Event` _has many_ ticket types.
 * [1.0 point] With your models it must be possible to create in the console the following objects:
   * Two customers,
   * Three different venues,
   * Two different events (each referencing a different event venue), 
-  * Two ticket types per event (e.g. general and golden),
+  * Two ticket types per event (e.g. general and golden).
+
+You may edit the file `db/seeds.rb` and add all the code necessary to create the above. To run your code, enter the following command:
+
+```sh
+$rails db:seed
+```
+
+To run the above command successfully, all migrations need to be run first!
   
 It can be convenient to first sketch an E-R diagram (on paper or with a visual tool) that facilitates analyzing what the necessary models and associations are. You are not required to hand in your diagram though.
 
