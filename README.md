@@ -1,4 +1,4 @@
-# Lab Assignment #4
+# Solution to Lab Assignment #4
 **Names:** (write your name(s) here)
 
 ## Introduction
@@ -44,15 +44,30 @@ All migrations need to be run before executing the command above!
 
 ### Validations (2 points)
 
-* [.5 point] Introduce validation for the `email` attribute of the `Customer` model. Hint: look at the [custom email validator example](https://guides.rubyonrails.org/active_record_validations.html) in the Rails Guides (see sect 6.1). In addition, emails must be unique.
-* [.5 point] The name and lastname of a `Customer` must not be blank.
+* [.5 point] Introduce validation for the `email` attribute of the `Customer` model. Hint: look at the [custom email validator example](https://guides.rubyonrails.org/active_record_validations.html) in the Rails Guides (see sect 6.1). Create the `app/validators` directory, and there add `email_validator.rb` containing the `EmailValidator` class. In addition, emails must be unique. 
+* [.5 point] The first name and lastname of a `Customer` must not be blank.
 * [.5 point] The name and address of an `EventVenue` must not be blank. In addition, capacity must be integer, with 10 as the minimum value.
 * [.5 point] The price of a `TicketType` must be greater or equal than zero.
 
 ### Callbacks (1.5 point)
 
 * [1.5 point] When adding a ticket to an `Order`, the `total` value of the `Order` must be increased accordingly. Correspondingly, if a `Ticket` belonging to an `Order` is deleted, the `total` value of the `Order` must be decreased.
-  
+
+Hints:
+
+* Before attempting to update the `Order` total after creating a `Ticket`, make sure that the `Order` total is not `nil` (null).
+* For the above to be possible, it may be necessary to create an `before_save` callback in the `Order` model that forces `Order.total` to be initialized with 0 value (instead of null):
+```ruby
+  class Order < ActiveRecord::Base
+    before_save :init
+
+    def init
+      self.total ||= 0
+    end
+  end    
+```
+* After updating the `Order` total, do not forget to `save` the order.
+
 ## Grading
 
 Each of the three parts of the assignment will be graded on a scale from 1 to 5. The criteria for each score is as follows:

@@ -21,3 +21,9 @@ tt2 = TicketType.create(name: "Pacifico Bajo", event: e1, price: 40000)
 
 tt3 = TicketType.create(name: "Galeria", event: e2, price: 40000)
 tt4 = TicketType.create(name: "VIP", event: e2, price: 100000)
+
+o1 = Order.create(customer: c1)
+t1 = Ticket.create(ticket_type: tt1, order: o1)
+t1 = Ticket.create(ticket_type: tt2, order: o1)
+t1 = Ticket.create(ticket_type: tt2, order: o1)
+
