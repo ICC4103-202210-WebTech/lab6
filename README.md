@@ -1,15 +1,13 @@
-# Lab Assignment #3
+# Lab Assignment #4
 **Names:** (write your name(s) here)
 
 ## Introduction
 
-This third lab assignment will be graded and you will be working in pairs, so you can team up with a peer to start working on it. We expect from you to only be working with your peer and avoid exchanging code with others during the lab.
-
-You will be working with the ActiveRecord Object-Relational Mapping (ORM) framework to implement the model layer of a web application. By the end of the assignment, you are required to submit a working Ruby on Rails application containing the model layer, that is, all models and associations.
+This fourth lab assignment will be graded and you will be working in pairs, so you can team up with a peer to start working on it. You will continue working on the ticket sales application, adding more complex model associations, model validations, and Active Record callbacks. 
 
 ## First Steps
 
-The starter code contains a Rails project that has a few changes after its original creation. You may open the project with VSCode, with RubyMine, or even use a text-based editor like Vim. If you work on the terminal, always remember to set the correct version of ruby and gemset using RVM:
+The starter code contains a Rails project that implements all of the requirements of the previous lab assignment. You may open the project with VSCode, with RubyMine, or even use a text-based editor like Vim. If you work on the terminal, always remember to set the correct version of ruby and gemset using RVM:
 
 ```sh
 rvm use 3@webtech # this will work on the course's VM
@@ -22,45 +20,39 @@ If you take a look at the `db` directory, you will find there are two files:
 
 Now, if you also take a look at `db/migrate`, you will see there is a single migration that creates an `events` table in the database. This table corresponds, of course, to the `Event` model. To see the current columns of the `events` table (and attributes of the `Event` model), one possibility is to take a look at `schema.rb` and have a look at the columns that are added to the `events` table on initialization. 
 
-## Where fun begins
+## Let's Roll
 
-You will create the data model for a web application that implements a ticket sales system. Systems of such kind usually present the user an event catalog, and the user reviews event information and purchases tickets.
+### More Models and Associations (2.5 points)
 
-* [1.0 point] Start by creating a `Customer` model with `first_name`, `last_name`, `email`, `phone`, `password` and `address` fields. Make the address `string` type.
-* [1.5 point] Create an `EventVenue` model with `name`, `address` and `capacity` (integer) attributes. Note than an `EventVenue` _has many_ events. And that an `Event` may _belong to_ an `EventVenue`. When adding a `belongs_to :event_venue` call to `Event`, pass the `optional: true` argument:
+The first step is to complete the data model implemented with Active Record in the previous assignment, by adding the following models and associations:
 
-```ruby
-belongs_to :event_venue, optional:true
-```
+* [.5 point] Add a `Ticket` model that references a `TicketType`.
+* [.5 point] Add an `Order` model that references a `Customer`, and that has a `total` attribute (integer).
+* [.5 point] An `Order` _has many_ `Ticket`s., and a `Ticket` belongs to an `Order`.
+* [.5 point] A `Customer` _has many_ `Order`s, and an `Order` belongs to a `Customer`.
+* [.5 point] A `Customer` _has many_ `Ticket`s _through_ `Order`.
+* Try out your models and associations, by creating extending `seeds.rb` to contain a `Customer` with at least one `Order` containing two or more `Ticket`s referencing different `TicketType`s.
 
-This will allow an `Event` to be created without specifying an `EventVenue`.
-* [1.0 point] Make an `Event` be able to reference an `EventVenue`. For this, a foreign key to the `event_venues` table must be added to the `event` table:
-```sh
-rails g migration AddEventVenueRefToEvent event_venue:references
-```
-Look at the migration that is generated with the above command line and make sure it adds a foreign key column to the `events` table.
-
-```ruby
-add_reference :events, :event_venue, null: false, foreign_key: true
-```
-
-* [1.5 point] Create a `TicketType` model that references an `Event`, has a price (integer) and a `name`. An `Event` _has many_ ticket types.
-* [1.0 point] With your models it must be possible to create in the console the following models:
-  * Two customers,
-  * Three different venues,
-  * Two different events (each referencing a different event venue), 
-  * Two ticket types per event (e.g. general and golden).
-
-You may edit the file `db/seeds.rb` (this file is intended for database initialization, as we will see in the next class) and add all the code necessary to create the above models (i.e., the same code you enter in the rails console). To run your code, enter the following command:
+Do not forget to run the `seeds.rb` file after applying migrations to your database.
 
 ```sh
+$rails db:migrate
 $rails db:seed
 ```
 
 All migrations need to be run before executing the command above!
-  
-It can be convenient to first sketch an E-R diagram (on paper or with a visual tool) that facilitates analyzing what the necessary models and associations are. You are not required to hand in your diagram though.
 
+### Validations (2 points)
+
+* [.5 point] Introduce validation for the `email` attribute of the `Customer` model. Hint: look at the [custom email validator example](https://guides.rubyonrails.org/active_record_validations.html) in the Rails Guides (see sect 6.1). In addition, emails must be unique.
+* [.5 point] The name and lastname of a `Customer` must not be blank.
+* [.5 point] The name and address of an `EventVenue` must not be blank. In addition, capacity must be integer, with 10 as the minimum value.
+* [.5 point] The price of a `TicketType` must be greater or equal than zero.
+
+### Callbacks (1.5 point)
+
+* [1.5 point] When adding a ticket to an `Order`, the `total` value of the `Order` must be increased accordingly. Correspondingly, if a `Ticket` belonging to an `Order` is deleted, the `total` value of the `Order` must be decreased.
+  
 ## Grading
 
 Each of the three parts of the assignment will be graded on a scale from 1 to 5. The criteria for each score is as follows:
