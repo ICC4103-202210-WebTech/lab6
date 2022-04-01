@@ -2,6 +2,12 @@ require 'securerandom'
 
 include FactoryBot::Syntax::Methods
 FactoryBot.define do
+  factory :organizer do
+    name { "MyString" }
+    address { "MyString" }
+    email { "MyString" }
+  end
+
   factory :customer do
     first_name { Faker::Name.name }
     last_name { Faker::Name.last_name }
