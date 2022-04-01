@@ -78,7 +78,7 @@ Each of the three parts of the assignment will be graded on a scale from 1 to 5.
 
 Then each 1-5 score will translate to 0, 0.25, 0.5, 0.75 and 1.0 weights that will multiply the maximum score possible in the corresponding part of the assignment. The weighted scores will be added up with the base point to calculate the final grade on a scale from 1 to 7.
 
-Please commit and push your code to GitHub until tomorrow (Wednesday 23rd) at 23:59.
+Please commit and push your code to GitHub until tomorrow (Wednesday 6th) at 23:59.
 
 ## About migrations
 
