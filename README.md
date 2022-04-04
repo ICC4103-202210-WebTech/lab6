@@ -4,7 +4,7 @@
 
 This fifth lab assignment will be graded and you will be working in pairs, so you can team up with a peer to start working on it. You will continue working on the ticket sales application, now adding a 'has and belongs to many' association, and several model queries.
 
-## First Steps
+## First Steps (Don't rush, read this first!)
 
 The starter code contains a Rails project that implements all of the requirements of the previous lab assignment. You may open the project with VSCode, with RubyMine, or even use a text-based editor like Vim. If you use RVM, it should automatically switch to the proper version of ruby with the 'webtech' gemset (see the files `.ruby-version` and `.ruby-gemset` in the root path of your repository). Should you need to set this manually, run the following command:
 
@@ -17,15 +17,22 @@ As in past assignments, if you take a look at the `db` directory, you will find 
 * `schema.rb`: This file is automatically created by Rails when migrations are run. The file contains all DDL operations needed to initialize the database schema according to migrations.
 * `seeds.rb`: It contains Ruby code that performs initialization in the database. You will see that a series of beers are created in the database.
 
-In this assignment, the database will be automatically populated with fake models for you to write Active Record queries against. For this to work, follow these steps:
+In addition to the above, in this assignment the database will be automatically populated with fake models for you to write Active Record queries against. For this to work, follow these steps:
 
 ```sh
+bundle install # new gems have been added to the Gemfile
 rails db:setup
 rails db:populate_fake_data # This will generate fake events, customers, etc.
 rails c
 ```
 
 The console will open up and you should be able to experiment with the models that are available.
+
+In case you wonder how models are being created with fake data, have a look at the 
+file `RAILS_ROOT/test/factories.rb`. Models are created automatically using a gem
+called [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails). Data for the models is provided by the [ffaker](https://github.com/ffaker/ffaker) gem.
+
+The rails/rake task `populate_fake_data` that generates models by calling definitions in `factories.rb` is defined in `RAILS_ROOT/lib/model_queries.rake`.
 
 ## Bring 'em on
 
