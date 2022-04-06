@@ -1,4 +1,5 @@
 # Lab Assignment #6
+**Names:** (write your name(s) here)
 
 ## Introduction
 
@@ -177,6 +178,8 @@ rails db:setup
 
 The following links to Rails Guides will provide you useful information for completing your assignment:
 
+* [Rails Action Controller Overview](https://edgeguides.rubyonrails.org/action_controller_overview.html) 
+* [Rails Routing from the Outside In](https://edgeguides.rubyonrails.org/routing.html)
 * [Command line](http://edgeguides.rubyonrails.org/command_line.html)
 * [Active Record Basics](http://edgeguides.rubyonrails.org/active_record_basics.html)
 * [Active Record Model](http://api.rubyonrails.org/classes/ActiveModel/Model.html)
