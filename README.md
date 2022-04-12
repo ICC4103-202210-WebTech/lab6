@@ -16,7 +16,7 @@ rvm use 3@webtech # this will work on the course's VM
 As in past assignments, if you take a look at the `db` directory, you will find there are two files:
 
 * `schema.rb`: This file is automatically created by Rails when migrations are run. The file contains all DDL operations needed to initialize the database schema according to migrations.
-* `seeds.rb`: It contains Ruby code that performs initialization in the database. You will see that a series of beers are created in the database.
+* `seeds.rb`: It contains Ruby code that performs initialization in the database. 
 
 In addition to the above, in this assignment the database will be automatically populated with fake models for you to write Active Record queries against. For this to work, follow these steps:
 
@@ -39,7 +39,7 @@ Read section 2.2 of [this guide](https://edgeguides.rubyonrails.org/routing.html
 
 You may recall from lectures that there is a component in RoR, and in many other current web application frameworks, which takes charge of routing client requests to controllers, i.e., the ['Rails Router'](https://edgeguides.rubyonrails.org/routing.html#the-purpose-of-the-rails-router) (henceforth just 'the router'). In RoR applications, the router has a configuration file located at `config/routes.rb`. In this file, you may configure the routes available, which basically consists on specifying directives that map requests by their HTTP methods and URL patterns to controllers and their actions. With Ruby on Rails, routes can be RESTful, or completely arbitrary.
 
-In addition, is possible to define different routing _scopes_ (you may think of these as route namespaces) in a RoR application, in such a way that you can have differents sets of routes for requests that are intended for a web API versus routes that are meant for a web application. The documentation from Rails Guides gives some clear examples about defining routing scopes. In this very assignment, you will be guided towards creating a routing scope for a web API that permits acting on User, Review and Beer restful resources.
+In addition, is possible to define different routing _scopes_ (you may think of these as route namespaces) in a RoR application, in such a way that you can have differents sets of routes for requests that are intended for a web API versus routes that are meant for a web application. The documentation from Rails Guides gives some clear examples about defining routing scopes. In this very assignment, you will be guided towards creating a routing scope for a web API that permits acting on resources.
 
 ## Controller Flavors
 
@@ -139,7 +139,7 @@ Ruby on Rails provides a console on which you may run ruby code that instances t
 
 ```sh
 rails c
-> Event.all # Will show all Beer models available
+> Event.all # Will show all Event models available
 > Event.first # Will show the first event record found
 > ev = EventVenue.create(name: bb, capacity: 1000) # Create an event venue
 > e = Event.create(...) # This will create an event
